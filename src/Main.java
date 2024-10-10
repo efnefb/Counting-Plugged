@@ -9,26 +9,15 @@ public class Main {
 
     public static void main(String[] args) throws FileNotFoundException{
         ArrayList<String> commonWords = getCommonWords("src/commonWords.txt");
-        ArrayList<String> x = extractText("src/textOne.txt", commonWords);
+        ArrayList<String> x = extractText("src/Nineteen+eighty-four.txt", commonWords);
         HashMap<String, Integer> freqTable = getFrequencies(x);
+
+        //Parallel arrays: One with the words, in order of frequency. The other, the corresponding frequencies
         ArrayList<String> ranking = sortWordsByFreq(freqTable);
-        System.out.println(ranking);
-
+        ArrayList<Integer> ranking_frequencies = getCorrespondingFrequencies(ranking, freqTable);
     }
 
-    //From the arraylist of words ––> create a frequency table of each word : frequency
-    public static HashMap<String, Integer> getFrequencies(ArrayList<String> words){
-        HashMap<String, Integer> freqTable = new HashMap<>();
-        for (String word: words){
-            if (freqTable.containsKey(word)){
-                freqTable.put(word, freqTable.get(word)+1);
-            }
-            else{
-                freqTable.put(word, 1);
-            }
-        }
-        return freqTable;
-    }
+
 
     //Sorts the list of unique words by frequency
     public static ArrayList<String> sortWordsByFreq(HashMap<String, Integer> freqTable) {
@@ -45,11 +34,33 @@ public class Main {
                 }
             }
         }
+
         return uniqueWords;
     }
 
+    //From the sorted arraylist of words, get the corresponding frequencies ––> returns a parallel array to what sortSordsbyFreq returns
+    public static ArrayList<Integer> getCorrespondingFrequencies(ArrayList<String> sortedWords, HashMap<String, Integer> freqTable){
+        ArrayList<Integer> uniqueFrequencies = new ArrayList<>();
+        for (String word: sortedWords){
+            uniqueFrequencies.add(freqTable.get(word));
+        }
+        return uniqueFrequencies;
 
+    }
 
+    //From the arraylist of words ––> create a frequency table of each word : frequency
+    public static HashMap<String, Integer> getFrequencies(ArrayList<String> words){
+        HashMap<String, Integer> freqTable = new HashMap<>();
+        for (String word: words){
+            if (freqTable.containsKey(word)){
+                freqTable.put(word, freqTable.get(word)+1);
+            }
+            else{
+                freqTable.put(word, 1);
+            }
+        }
+        return freqTable;
+    }
 
 
     //Read text into an arraylist
